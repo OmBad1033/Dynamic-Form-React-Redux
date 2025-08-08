@@ -13,6 +13,7 @@ import SplitText from "../components/SplitText";
 import GradientText from "../components/GradientText";
 import Magnet from "../components/Magnet";
 import ShinyText from "../components/ShinyText";
+import ProfileCard from "../components/ProfileCard";
 
 export default function HomePage() {
   return (
@@ -71,6 +72,22 @@ export default function HomePage() {
             />
           </Grid>
         </Grid>
+
+        <ProfileCard
+          name="Om Badavanache"
+          title="Software Engineer"
+          handle="om_bdvche"
+          status="Online"
+          iconUrl="../assets/profile.png"
+          contactText="Contact Me"
+          avatarUrl="https://imgs.search.brave.com/gzwhh-l9v2Sg166IMziTDVFRpmwn0t5SnOrtfEPzxsg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzExLzYzLzQ3LzM5/LzM2MF9GXzExNjM0/NzM5NjNfd1pPdEFj/ek0wWTJkc0JORUlr/VjQzU25mT0VrWEl2/YkcuanBn"
+          showUserInfo={true}
+          enableTilt={true}
+          enableMobileTilt={false}
+          onContactClick={() => {
+            window.open("https://www.linkedin.com/in/ombdvche/", "_blank");
+          }}
+        />
       </Stack>
     </div>
   );
@@ -104,13 +121,13 @@ function NavCard({ title, description, to, icon }: NavCardProps) {
           </Typography>
         </CardContent>
         <CardActions sx={{ px: 2, pb: 2 }}>
-          <Button
-            component={RouterLink}
-            to={to}
-            endIcon={<ArrowForward />}
-          >
-            <ShinyText text={`Go to ${title}`} disabled={false} speed={3} className='custom-class' />
-
+          <Button component={RouterLink} to={to} endIcon={<ArrowForward />}>
+            <ShinyText
+              text={`Go to ${title}`}
+              disabled={false}
+              speed={3}
+              className="custom-class"
+            />
           </Button>
         </CardActions>
       </Card>
