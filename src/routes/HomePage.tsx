@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Container,
   Stack,
   Typography,
   Grid,
@@ -13,8 +12,8 @@ import { Link as RouterLink } from "react-router-dom";
 
 export default function HomePage() {
   return (
-    <Container maxWidth="md" sx={{ py: 8 }}>
-      <Stack alignItems="center" spacing={5}>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <Stack alignItems="center" spacing={5} className="w-full flex flex-col items-center justify-center">
         <Typography variant="h2" textAlign="center">
           Dynamic Form
         </Typography>
@@ -39,14 +38,6 @@ export default function HomePage() {
           </Grid>
           <Grid item xs={12} md={4}>
             <NavCard
-              title="Preview"
-              description="Interact with the current form as an end user, with live validation."
-              to="/preview"
-              icon={<Preview />}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <NavCard
               title="My Forms"
               description="View and open previously saved forms from localStorage."
               to="/myforms"
@@ -55,7 +46,8 @@ export default function HomePage() {
           </Grid>
         </Grid>
       </Stack>
-    </Container>
+    </div>
+
   );
 }
 
@@ -70,7 +62,13 @@ function NavCard({ title, description, to, icon }: NavCardProps) {
   return (
     <Card
       elevation={2}
-      sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        "&:hover": { transform: "translateY(-2px)", boxShadow: 6 },
+      }}
     >
       <CardContent sx={{ flexGrow: 1 }}>
         <Stack direction="row" spacing={1} alignItems="center" mb={1}>

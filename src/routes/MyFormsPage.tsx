@@ -1,9 +1,14 @@
 import {
   Box,
-  List,
-  ListItemButton,
-  ListItemText,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  Paper,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useNavigate } from "react-router-dom";
@@ -14,10 +19,9 @@ export default function MyFormsPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  function openForm(id: string) {
+  function previewForm(id: string) {
     const form = forms.find((f) => f.id === id);
     if (!form) return;
-    // Load into builder state and navigate to preview
     dispatch(loadFromSchema(form));
     navigate("/preview");
   }
@@ -30,16 +34,36 @@ export default function MyFormsPage() {
       {forms.length === 0 ? (
         <Typography color="text.secondary">No saved forms yet.</Typography>
       ) : (
-        <List>
-          {forms.map((f) => (
-            <ListItemButton key={f.id} onClick={() => openForm(f.id)}>
-              <ListItemText
-                primary={f.name}
-                secondary={new Date(f.createdAt).toLocaleString()}
-              />
-            </ListItemButton>
-          ))}
-        </List>
+        <TableContainer component={Paper} elevation={1}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>DateTime</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {forms.map((f) => (
+                <TableRow key={f.id} hover>
+                  <TableCell>{f.name}</TableCell>
+                  <TableCell>
+                    {new Date(f.createdAt).toLocaleString()}
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => previewForm(f.id)}
+                    >
+                      Preview
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </Box>
   );

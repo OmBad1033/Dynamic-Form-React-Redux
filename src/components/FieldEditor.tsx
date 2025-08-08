@@ -3,8 +3,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Autocomplete,
   Box,
   Checkbox,
+  Chip,
   FormControl,
   FormControlLabel,
   IconButton,
@@ -15,6 +17,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import type { FieldSchema, FieldType } from "../types/form";
 import {
@@ -42,6 +45,12 @@ type Props = {
 export default function FieldEditor({ field, index }: Props) {
   const dispatch = useAppDispatch();
   const allFields = useAppSelector((s) => s.builder.fields);
+  const [optionsText, setOptionsText] = useState<string>(
+    (field.options || []).join("\n")
+  );
+  useEffect(() => {
+    setOptionsText((field.options || []).join("\n"));
+  }, [field.options]);
 
   const onChange = (patch: Partial<FieldSchema>) =>
     dispatch(updateField({ id: field.id, ...patch }));
@@ -124,19 +133,43 @@ export default function FieldEditor({ field, index }: Props) {
             label="Required"
           />
 
+          {/* Local textarea for editing options with newlines; synced to array */}
           {showOptions && (
             <TextField
-              label="Options (comma separated)"
-              value={(field.options || []).join(", ")}
-              onChange={(e) =>
+              label="Options (one per line)"
+              value={optionsText}
+              onChange={(e) => setOptionsText(e.target.value)}
+              onBlur={() =>
                 onChange({
-                  options: e.target.value
-                    .split(",")
+                  options: optionsText
+                    .split("\n")
                     .map((s) => s.trim())
                     .filter(Boolean),
                 })
               }
               fullWidth
+              multiline
+              minRows={3}
+              helperText="Enter each option on a new line. Commas are allowed inside options."
+            />
+          )}
+
+          {showOptions && (
+            <TextField
+              label="Options (one per line)"
+              value={(field.options || []).join("\n")}
+              onChange={(e) =>
+                onChange({
+                  options: e.target.value
+                    .split("\n")
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                })
+              }
+              fullWidth
+              multiline
+              minRows={3}
+              helperText="Enter each option on a new line. Commas are allowed inside options."
             />
           )}
 

@@ -5,17 +5,26 @@ import {
   FormControl,
   FormControlLabel,
   InputLabel,
+  ListItemButton,
+  ListItemText,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import { useMemo, useState } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import type { FieldSchema } from "../types/form";
 import { validateField } from "../utils/validation";
 import { evalDerived } from "../utils/derived";
+import { loadFromSchema } from "../store/builderSlice";
+import FormsList from "./MyFormsPage";
 
 export default function PreviewPage() {
   const usedFields = useAppSelector((s) =>
@@ -60,16 +69,30 @@ export default function PreviewPage() {
       <Typography variant="h5" gutterBottom>
         Preview
       </Typography>
-      <Stack spacing={2}>
-        {usedFields.map((f) => (
-          <FieldRenderer
-            key={f.id}
-            field={f}
-            value={computedValues[f.name]}
-            errors={errors[f.name]}
-            onChange={setValue}
-          />
-        ))}
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={3}
+        alignItems="flex-start"
+      >
+        <Box flex={1}>
+          <Stack spacing={2}>
+            {usedFields.map((f) => (
+              <FieldRenderer
+                key={f.id}
+                field={f}
+                value={computedValues[f.name]}
+                errors={errors[f.name]}
+                onChange={setValue}
+              />
+            ))}
+          </Stack>
+        </Box>
+        <Box minWidth={280} sx={{ position: "sticky", top: 16 }}>
+          <Typography variant="subtitle1" gutterBottom>
+            My Forms
+          </Typography>
+          <FormsList />
+        </Box>
       </Stack>
     </Box>
   );
@@ -102,11 +125,26 @@ function FieldRenderer({ field, value, errors, onChange }: FieldRendererProps) {
       return <TextField {...commonProps} multiline minRows={3} />;
     case "date":
       return (
-        <TextField
-          {...commonProps}
-          type="date"
-          InputLabelProps={{ shrink: true }}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label={field.label}
+            value={
+              value
+                ? typeof value === "string"
+                  ? dayjs(value)
+                  : dayjs(String(value))
+                : null
+            }
+            onChange={(d) => onChange(field, d ? d.format("YYYY-MM-DD") : "")}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                error: !!errors?.length,
+                helperText: errors?.join(", "),
+              },
+            }}
+          />
+        </LocalizationProvider>
       );
     case "checkbox":
       return (
@@ -143,23 +181,46 @@ function FieldRenderer({ field, value, errors, onChange }: FieldRendererProps) {
           <Typography variant="subtitle2" gutterBottom>
             {field.label}
           </Typography>
-          <Stack direction="row" spacing={2}>
+          <RadioGroup
+            row
+            value={String(value ?? "")}
+            onChange={(_, val) => onChange(field, val)}
+          >
             {(field.options || []).map((opt) => (
               <FormControlLabel
                 key={opt}
-                control={
-                  <Checkbox
-                    checked={String(value ?? "") === opt}
-                    onChange={() => onChange(field, opt)}
-                  />
-                }
+                value={opt}
+                control={<Radio />}
                 label={opt}
               />
             ))}
-          </Stack>
+          </RadioGroup>
         </FormControl>
       );
     default:
       return <TextField {...commonProps} />;
+  }
+
+  function FormsList() {
+    const forms = useAppSelector((s) => s.forms.items);
+    const dispatch = useAppDispatch();
+    return (
+      <Stack spacing={1}>
+        {forms.map((f) => (
+          <ListItemButton
+            key={f.id}
+            onClick={() => dispatch(loadFromSchema(f))}
+          >
+            <ListItemText
+              primary={f.name}
+              secondary={new Date(f.createdAt).toLocaleString()}
+            />
+          </ListItemButton>
+        ))}
+        {forms.length === 0 && (
+          <Typography color="text.secondary">No saved forms yet.</Typography>
+        )}
+      </Stack>
+    );
   }
 }
