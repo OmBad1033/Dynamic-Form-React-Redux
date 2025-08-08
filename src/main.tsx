@@ -13,9 +13,10 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="h-screen w-screen bg-[#f7f7fb]">
-          <RouterProvider router={router} />
-        </div>
+ 
+          <div className="h-screen w-screen overflow-hidden">
+            <RouterProvider router={router} />
+          </div>
       </ThemeProvider>
     </Provider>
   </StrictMode>

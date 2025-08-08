@@ -5,7 +5,7 @@ export const theme = createTheme({
     mode: "dark",
     primary: { main: "#90caf9" },
     secondary: { main: "#f48fb1" },
-    background: { default: "#0f0f10", paper: "rgba(255,255,255,0.06)" },
+    background: { default: "transparent", paper: "rgba(20,20,20,0.28)" },
     text: { primary: "#ffffff", secondary: "rgba(255,255,255,0.7)" },
   },
   shape: { borderRadius: 12 },

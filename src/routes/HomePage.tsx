@@ -9,13 +9,28 @@ import {
   Grid,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import SplitText from "../components/SplitText";
+import GradientText from "../components/GradientText";
+import Magnet from "../components/Magnet";
+import ShinyText from "../components/ShinyText";
 
 export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <Stack alignItems="center" spacing={5} className="w-full flex flex-col items-center justify-center">
+      <Stack
+        alignItems="center"
+        spacing={5}
+        className="w-full flex flex-col items-center justify-center"
+      >
         <Typography variant="h2" textAlign="center">
-          Dynamic Form
+          <GradientText
+            colors={["#40ffaa", "#4079ff", "#40ffaa", "#4079ff", "#40ffaa"]}
+            animationSpeed={9}
+            showBorder={false}
+            className="custom-class"
+          >
+            Dynamic Form
+          </GradientText>
         </Typography>
         <Typography
           variant="subtitle1"
@@ -23,8 +38,19 @@ export default function HomePage() {
           textAlign="center"
           maxWidth={600}
         >
-          Build, preview, and manage dynamic forms with validations and derived
-          fields.
+          <SplitText
+            text="Build, preview, and manage dynamic forms with validations and derived fields."
+            className="text-2xl font-semibold text-center"
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
         </Typography>
 
         <Grid container spacing={3}>
@@ -47,7 +73,6 @@ export default function HomePage() {
         </Grid>
       </Stack>
     </div>
-
   );
 }
 
@@ -60,35 +85,35 @@ type NavCardProps = {
 
 function NavCard({ title, description, to, icon }: NavCardProps) {
   return (
-    <Card
-      elevation={2}
-      sx={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        transition: "transform 0.2s ease, box-shadow 0.2s ease",
-        "&:hover": { transform: "translateY(-2px)", boxShadow: 6 },
-      }}
-    >
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Stack direction="row" spacing={1} alignItems="center" mb={1}>
-          {icon}
-          <Typography variant="h6">{title}</Typography>
-        </Stack>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ px: 2, pb: 2 }}>
-        <Button
-          component={RouterLink}
-          to={to}
-          variant="contained"
-          endIcon={<ArrowForward />}
-        >
-          Go to {title}
-        </Button>
-      </CardActions>
-    </Card>
+    <Magnet padding={50} disabled={false} magnetStrength={50}>
+      <Card
+        elevation={2}
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <CardContent sx={{ flexGrow: 1 }}>
+          <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+            {icon}
+            <Typography variant="h6">{title}</Typography>
+          </Stack>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardContent>
+        <CardActions sx={{ px: 2, pb: 2 }}>
+          <Button
+            component={RouterLink}
+            to={to}
+            endIcon={<ArrowForward />}
+          >
+            <ShinyText text={`Go to ${title}`} disabled={false} speed={3} className='custom-class' />
+
+          </Button>
+        </CardActions>
+      </Card>
+    </Magnet>
   );
 }

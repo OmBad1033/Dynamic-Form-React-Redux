@@ -3,6 +3,7 @@ import AppLayout from "./AppLayout";
 import HomePage from "./HomePage";
 import CreatePage from "./CreatePage";
 import MyFormsPage from "./MyFormsPage";
+import PreviewPage from "./PreviewPage";
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "create", element: <CreatePage key="create" /> },
       { path: "myforms", element: <MyFormsPage /> },
+      { path: "preview", element: <PreviewPage /> },
     ],
   },
 ]);

@@ -75,7 +75,7 @@ export default function PreviewPage() {
         alignItems="flex-start"
       >
         <Box flex={1}>
-          <Stack spacing={2}>
+          <Stack spacing={5}>
             {usedFields.map((f) => (
               <FieldRenderer
                 key={f.id}
@@ -88,9 +88,6 @@ export default function PreviewPage() {
           </Stack>
         </Box>
         <Box minWidth={280} sx={{ position: "sticky", top: 16 }}>
-          <Typography variant="subtitle1" gutterBottom>
-            My Forms
-          </Typography>
           <FormsList />
         </Box>
       </Stack>
