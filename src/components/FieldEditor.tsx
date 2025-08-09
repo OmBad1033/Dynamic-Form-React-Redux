@@ -152,25 +152,6 @@ export default function FieldEditor({ field, index }: Props) {
             />
           )}
 
-          {showOptions && (
-            <TextField
-              label="Options (one per line)"
-              value={(field.options || []).join("\n")}
-              onChange={(e) =>
-                onChange({
-                  options: e.target.value
-                    .split("\n")
-                    .map((s) => s.trim())
-                    .filter(Boolean),
-                })
-              }
-              fullWidth
-              multiline
-              minRows={3}
-              helperText="Enter each option on a new line. Commas are allowed inside options."
-            />
-          )}
-
           <TextField
             label="Default value"
             value={String(field.defaultValue ?? "")}

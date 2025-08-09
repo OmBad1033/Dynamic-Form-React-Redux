@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FieldEditor from "../components/FieldEditor";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
@@ -36,6 +36,10 @@ const fieldTypes: { value: FieldType; label: string }[] = [
 export default function CreatePage() {
   const builder = useAppSelector((s) => s.builder);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(resetBuilder());
+  }, [dispatch]);
 
   const [saveOpen, setSaveOpen] = useState(false);
   const [newType, setNewType] = useState<FieldType>("text");
