@@ -1,4 +1,4 @@
-import { ArrowForward, Build, ListAlt, Preview } from "@mui/icons-material";
+import { ArrowForward, Build, ListAlt } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -55,22 +55,22 @@ export default function HomePage() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
+
             <NavCard
               title="Create"
               description="Build a new form by adding fields, validations, and derived logic."
               to="/create"
               icon={<Build />}
             />
-          </Grid>
-          <Grid item xs={12} md={4}>
+
+
             <NavCard
               title="My Forms"
               description="View and open previously saved forms from localStorage."
               to="/myforms"
               icon={<ListAlt />}
             />
-          </Grid>
+
         </Grid>
 
         <ProfileCard

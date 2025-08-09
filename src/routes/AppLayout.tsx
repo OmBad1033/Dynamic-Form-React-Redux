@@ -35,6 +35,8 @@ export default function AppLayout() {
           marginTop: "20px",
         }}
       >
+        
+
         {/* Glassmorphic Navigation Bar */}
         <AppBar
           position="sticky"
@@ -62,6 +64,7 @@ export default function AppLayout() {
                 hoverIntensity={0.5}
                 enableHover={true}
               >
+
                 Dynamic Form
               </FuzzyText>
             </Typography>

@@ -5,8 +5,6 @@ import {
   FormControl,
   FormControlLabel,
   InputLabel,
-  ListItemButton,
-  ListItemText,
   MenuItem,
   Radio,
   RadioGroup,
@@ -19,11 +17,10 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../store/hooks";
 import type { FieldSchema } from "../types/form";
 import { validateField } from "../utils/validation";
 import { evalDerived } from "../utils/derived";
-import { loadFromSchema } from "../store/builderSlice";
 import FormsList from "./MyFormsPage";
 
 export default function PreviewPage() {
@@ -196,28 +193,5 @@ function FieldRenderer({ field, value, errors, onChange }: FieldRendererProps) {
       );
     default:
       return <TextField {...commonProps} />;
-  }
-
-  function FormsList() {
-    const forms = useAppSelector((s) => s.forms.items);
-    const dispatch = useAppDispatch();
-    return (
-      <Stack spacing={1}>
-        {forms.map((f) => (
-          <ListItemButton
-            key={f.id}
-            onClick={() => dispatch(loadFromSchema(f))}
-          >
-            <ListItemText
-              primary={f.name}
-              secondary={new Date(f.createdAt).toLocaleString()}
-            />
-          </ListItemButton>
-        ))}
-        {forms.length === 0 && (
-          <Typography color="text.secondary">No saved forms yet.</Typography>
-        )}
-      </Stack>
-    );
   }
 }
